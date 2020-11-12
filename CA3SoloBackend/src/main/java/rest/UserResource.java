@@ -79,15 +79,11 @@ public class UserResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public String SigneUp(String userName, String password) {
-        EntityManager em = EMF.createEntityManager();
-        try {
-            UserDTO newUser = new UserDTO(userName, password);
-            FACADE.createUser(newUser);
-            return "User Was Created";
-        } finally {
-            em.close();
-        }
+    public String SigneUp(String newUser) {
+            UserDTO newUserDTO = GSON.fromJson(newUser, UserDTO.class);
+            FACADE.createUser(newUserDTO);
+            return GSON.toJson("User was created");
+
     }
 
 }
