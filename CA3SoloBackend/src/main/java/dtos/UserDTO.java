@@ -10,15 +10,15 @@ package dtos;
  * @author ckfol
  */
 public class UserDTO {
-    String userName, password;
+    String username, password;
 
-    public UserDTO(String userName, String password) {
-        this.userName = userName;
+    public UserDTO(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
