@@ -9,6 +9,7 @@ import facade from "./apiFacade";
 import ValidateRoleSite from "./validateRoleSite";
 import UserSite from "./userSite";
 import AdminSite from "./adminSite";
+import SignUp from "./signeUp";
 
 const NavBarIO = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -62,6 +63,15 @@ const Header = (props) => {
               </NavDropdown>
             </Nav>
             <Nav>
+              {props.loggedIn ? (
+                <></>
+              ) : (
+                <NavItem href="/SignUp">
+                  <Nav.Link as={Link} to="/SignUp">
+                    Sign Up
+                  </Nav.Link>
+                </NavItem>
+              )}
               <NavItem href="/Login">
                 <Nav.Link as={Link} to="/Login">
                   <IsLoggedIn loggedIn={props.loggedIn} />
@@ -86,6 +96,7 @@ const Content = (props) => {
       <Route path="/Login">
         <Login setLoggedIn={props.setLoggedIn} loggedIn={props.loggedIn} />
       </Route>
+      <Route path="/SignUp" component={SignUp} />
       <Route path="*" component={NoMatch} />
     </Switch>
   );

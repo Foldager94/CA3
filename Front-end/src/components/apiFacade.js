@@ -43,6 +43,8 @@ const logout = () => {
     localStorage.removeItem("jwtToken");
 }
 
+
+
 function ApiFacade() {
 
     const login = (user, password) => {
@@ -56,6 +58,11 @@ function ApiFacade() {
             })
     }
 
+    const signUp = (username, password) => {
+
+        const options = makeOptions("POST", false, { username: username, password: password })
+        return fetch(URL + "/api/user/signup", options)
+    }
 
     const fetchData = () => {
         const options = makeOptions("GET", true); //True add's the token
@@ -88,7 +95,8 @@ function ApiFacade() {
         logout,
         fetchData,
         getUserName,
-        getRoles
+        getRoles,
+        signUp
     }
 }
 const facade = ApiFacade();

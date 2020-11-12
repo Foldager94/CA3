@@ -7,8 +7,11 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dtos.UserDTO;
 import entities.User;
+import errorhandling.API_Exception;
 import facades.DataFetcherFacade;
 import facades.UserFacade;
 import java.util.List;
@@ -79,10 +82,19 @@ public class UserResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public String SigneUp(String newUser) {
-            UserDTO newUserDTO = GSON.fromJson(newUser, UserDTO.class);
-            FACADE.createUser(newUserDTO);
-            return GSON.toJson("User was created");
+    public String SigneUp(String jsonString) throws API_Exception {
+        String username;
+        String password;
+        try {
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            username = json.get("username").getAsString();
+            password = json.get("password").getAsString();
+        } catch (Exception e) {
+           throw new API_Exception("Malformed JSON Suplied",400,e);
+        }
+        UserDTO newUserDTO = new UserDTO(username, password);
+        FACADE.createUser(newUserDTO);
+        return GSON.toJson("User was created");
 
     }
 
