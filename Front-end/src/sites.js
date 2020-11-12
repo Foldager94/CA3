@@ -1,7 +1,7 @@
-export const Site = "http://localhost:8080/jpareststarter";
+export const Site = "https://vd52024.dk/CA3Backend";
 
-export const AdminUrlUserCount = "http://localhost:8080/jpareststarter/api/admin/userCount";
+export const AdminUrlUserCount = "https://vd52024.dk/CA3Backend/api/admin/userCount";
 
-export const UserUrlUserCount = "http://localhost:8080/jpareststarter/api/user/userCount"
+export const UserUrlUserCount = "https://vd52024.dk/CA3Backend/api/user/userCount"
 
-export const DailyFunUrl = "http://localhost:8080/jpareststarter/api/dailyfun";
+export const DailyFunUrl = "https://vd52024.dk/CA3Backend/api/dailyfun";

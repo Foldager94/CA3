@@ -1,5 +1,7 @@
 package facades;
 
+import entities.Role;
+import dtos.UserDTO;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -40,5 +42,19 @@ public class UserFacade {
         return user;
     }
    
+    public void createUser(UserDTO user){
+        EntityManager em = emf.createEntityManager();
+        try{
+            User newUser = new User(user.getUserName(), user.getPassword());
+            Role userRole = new Role("user");
+            newUser.addRole(userRole);
+            em.getTransaction().begin();
+            em.persist(newUser);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+    }
 
 }

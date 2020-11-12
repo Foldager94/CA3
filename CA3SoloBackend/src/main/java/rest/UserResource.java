@@ -5,7 +5,12 @@
  */
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dtos.UserDTO;
 import entities.User;
+import facades.DataFetcherFacade;
+import facades.UserFacade;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -16,6 +21,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
@@ -31,7 +37,8 @@ import utils.EMF_Creator;
 public class UserResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-
+    private static final UserFacade FACADE = UserFacade.getUserFacade(EMF);
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     @Context
     private UriInfo context;
 
@@ -63,6 +70,21 @@ public class UserResource {
             TypedQuery<User> query = em.createQuery("select u from User u", entities.User.class);
             List<User> users = query.getResultList();
             return "[" + users.size() + "]";
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Path("/signup")
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String SigneUp(String userName, String password) {
+        EntityManager em = EMF.createEntityManager();
+        try {
+            UserDTO newUser = new UserDTO(userName, password);
+            FACADE.createUser(newUser);
+            return "User Was Created";
         } finally {
             em.close();
         }
