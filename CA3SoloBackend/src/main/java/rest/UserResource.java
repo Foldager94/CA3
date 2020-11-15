@@ -7,10 +7,12 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.KoalaDTO;
 import dtos.UserDTO;
 import entities.User;
 import facades.DataFetcherFacade;
 import facades.UserFacade;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -24,6 +26,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
@@ -39,6 +42,7 @@ public class UserResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final UserFacade FACADE = UserFacade.getUserFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final DataFetcherFacade DATAFACADE = new DataFetcherFacade();
     @Context
     private UriInfo context;
 
@@ -80,10 +84,34 @@ public class UserResource {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public String SigneUp(String newUser) {
+        EntityManager em = EMF.createEntityManager();
             UserDTO newUserDTO = GSON.fromJson(newUser, UserDTO.class);
+            try{
+            if(em.find(User.class, newUserDTO.getUsername()) == null){
             FACADE.createUser(newUserDTO);
             return GSON.toJson("User was created");
+            }else{
+                return GSON.toJson("Username is already in use");
+            }
+            } finally {
+                em.close();
+            }
 
     }
+    
+    @Path("/koala")
+    @GET
+    @RolesAllowed("user")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String Koala() throws IOException {
+        KoalaDTO koala = new KoalaDTO(DATAFACADE.getKoalaFact(), DATAFACADE.getKoalaLink());
+        return GSON.toJson(koala);
+    }
+    
+    
+    
+    
+    
+
 
 }

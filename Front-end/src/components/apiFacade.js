@@ -58,10 +58,10 @@ function ApiFacade() {
             })
     }
 
-    const signUp = (username, password) => {
-
-        const options = makeOptions("POST", false, { username: username, password: password })
-        return fetch(URL + "/api/user/signup", options)
+    const signUp = (user, password, zodiacsign, flower) => {
+        console.log(zodiacsign)
+        const options = makeOptions("POST", false, { username: user, password: password, zodiacsign: zodiacsign, flower: flower })
+        return fetch(URL + "/api/user/signup", options);
     }
 
     const fetchData = () => {
@@ -82,6 +82,7 @@ function ApiFacade() {
 
         if (body) {
             opts.body = JSON.stringify(body);
+            console.log(body)
         }
         return opts;
     }

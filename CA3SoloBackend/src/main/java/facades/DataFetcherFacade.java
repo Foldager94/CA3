@@ -8,6 +8,8 @@ package facades;
 import com.google.gson.Gson;
 import dtos.BoredDTO;
 import dtos.CatFactsDTO;
+import dtos.KoalaFactDTO;
+import dtos.KoalaImgDTO;
 import dtos.MyIPDTO;
 import dtos.SpaceDTO;
 import dtos.TrumpQuotesDTO;
@@ -19,7 +21,7 @@ import utils.HttpUtils;
  * @author GRP 5
  */
 public class DataFetcherFacade {
-
+    
     public DataFetcherFacade() {
 
     }
@@ -67,6 +69,21 @@ public class DataFetcherFacade {
         TrumpQuotesDTO trumpQuotesDTO = gson.fromJson(jasonString, TrumpQuotesDTO.class);
 
         return trumpQuotesDTO;
+    }
+    
+    public KoalaFactDTO getKoalaFact() throws IOException {
+         Gson gson = new Gson();
+         String jsonString = HttpUtils.fetchData("https://some-random-api.ml/facts/koala");
+         KoalaFactDTO koalaFactDTO = gson.fromJson(jsonString, KoalaFactDTO.class);
+        
+        return koalaFactDTO;
+    }
+    
+    public KoalaImgDTO getKoalaLink() throws IOException {
+        Gson gson = new Gson();
+        String jsonString = HttpUtils.fetchData("https://some-random-api.ml/img/koala");
+        KoalaImgDTO koalaImgDTO = gson.fromJson(jsonString, KoalaImgDTO.class);
+        return koalaImgDTO;
     }
 
 }

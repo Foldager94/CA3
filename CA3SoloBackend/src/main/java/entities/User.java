@@ -1,5 +1,6 @@
 package entities;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,6 +38,11 @@ public class User implements Serializable {
         @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "flower", referencedColumnName = "flower")
+    private Flowers flower;
+    @Column(name = "zodiac_sign")
+    private String zodiacSign;
 
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {
@@ -89,4 +97,22 @@ public class User implements Serializable {
         roleList.add(userRole);
     }
 
+    public Flowers getFlower() {
+        return flower;
+    }
+
+    public void setFlower(Flowers favoritFlower) {
+        this.flower = favoritFlower;
+    }
+
+    public String getZodiacSign() {
+        return zodiacSign;
+    }
+
+    public void setZodiacSign(String zodiacSign) {
+        this.zodiacSign = zodiacSign;
+    }
+
+
+    
 }

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import facade from "./apiFacade";
-import { AdminUrlUserCount } from "./../sites";
+import { GetAllUsers } from "./../sites";
+import Table from "./table";
 
-const url = AdminUrlUserCount;
+const url = GetAllUsers;
 
 const AdminSite = () => {
-  const [count, setCount] = useState("");
+  const [users, setCount] = useState([]);
+  console.log(users);
   return (
     <>
-      <p>Number of users on this site: {count}</p>
       <button
         onClick={() =>
           fetch(url, facade.makeOptions("GET", true))
@@ -18,6 +19,7 @@ const AdminSite = () => {
       >
         Hente antal bruger
       </button>
+      <Table list={users} />
     </>
   );
 };
